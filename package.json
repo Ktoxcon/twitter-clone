@@ -1,0 +1,23 @@
+{
+  "name": "tweeter-nodejs",
+  "version": "1.0.0",
+  "description": "Tweeter clone made in node js.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ktoxcon/Twitter.git"
+  },
+  "keywords": [
+    "Node.js",
+    "Twitter"
+  ],
+  "author": "KToxcon",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Ktoxcon/Twitter/issues"
+  },
+  "homepage": "https://github.com/Ktoxcon/Twitter#readme"
+}
