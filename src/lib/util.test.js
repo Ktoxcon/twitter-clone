@@ -1,4 +1,4 @@
-import { CommandParser } from "./util";
+const {CommandParser} = require('./util');
 
  describe('Parsing Req for obtain commmands', () => {
     it('It should return a object with the command and the args', () => {
@@ -14,10 +14,3 @@ import { CommandParser } from "./util";
         expect(CommandParser(req3)).toEqual({command:"login",data:["arg","arg","arg"]});
     });
  });
-
-// describe('Matching Operations', () => {
-//     it('It should return a ', () => {
-        
-//     });
-    
-// });
