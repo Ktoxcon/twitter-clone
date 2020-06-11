@@ -1,4 +1,4 @@
-exports.CommandParser = (req) => {
+module.exports.CommandParser = (req) => {
     const toParse = req.body.command
                     .trim().split(' ').filter(arg => arg.trim());
     const command = toParse.shift();
@@ -12,7 +12,7 @@ exports.CommandParser = (req) => {
     return parsed;
 }
 
-exports.CommandMatcher = (reqCommand) => {
+exports.CommandMatcher = ({command}) => {
     const COMMANDS = [
         "ADD_TWEET",
         "DELETE_TWEET",
@@ -25,11 +25,16 @@ exports.CommandMatcher = (reqCommand) => {
         "REGISTER"
     ];
 
-    const commandMatched = COMMANDS.filter((command) => {
-        command === reqCommand.command.toUpperCase() ? command : undefined;
-    }).join();
+    const commandMatched = COMMANDS.filter(match => 
+        match === String(command).toUpperCase()
+    ).join(); 
 
-    return commandMatched;
+    if(commandMatched !== ""){
+        return commandMatched;
+    }else{
+        return "Unrecognized command";
+    }
+
 }
 
 
