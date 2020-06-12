@@ -32,9 +32,9 @@ exports.CommandMatcher = ({command}) => {
 
 }
 
-exports.ArgumentMatcher = ({command,args}) => {
+exports.ArgumentValidator = ({command,args}) => {
     const COMMANDS = {
-        "ADD_TWEET":3,
+        "ADD_TWEET":1,
         "DELETE_TWEET":1,
         "EDIT_TWEET":2,
         "VIEW_TWEETS":0 || 1,
@@ -56,6 +56,5 @@ exports.ArgumentMatcher = ({command,args}) => {
     }
 
     return validArgs;
-
 }
 
