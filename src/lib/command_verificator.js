@@ -45,7 +45,7 @@ module.exports.ArgumentValidator = ({command,args}) => {
         "ADD_TWEET":1,
         "DELETE_TWEET":1,
         "EDIT_TWEET":2,
-        "VIEW_TWEETS":0 || 1,
+        "VIEW_TWEETS":1,
         "FOLLOW":1,
         "UNFOLLOW":1,
         "PROFILE":1,
@@ -68,15 +68,15 @@ module.exports.ArgumentValidator = ({command,args}) => {
 
 module.exports.getAction = (req) => {
 
-    const action = CommandParser(req);
-    const validCommand = CommentValidator(CommandMatcher(action));
-    const validArguments = ArgumentValidator(action);
+    const action = this.CommandParser(req);
+    const validCommand = this.CommentValidator(this.CommandMatcher(action));
+    const validArguments = this.ArgumentValidator(action);
 
     if(validCommand){
         if(validArguments) return action;
-        else{ return {message:"Invalid arguments"}};
+        else{ return {command:"NULL",args:"Invalid arguments"}};
     }else{
-        return {message:"Invalid Command"};
+        return {command:"INVALID_COMMAND",args:"NULL"};
     }
 };
 
