@@ -1,7 +1,7 @@
-const unbracket = require("unbracket");
+import { unbracketWithBrackets } from "unbracket";
 
 const longArguments = (command) => {
-  return unbracket.unbracketWithBrackets(command);
+  return unbracketWithBrackets(command);
 };
 
 const CommandParser = (req) => {
