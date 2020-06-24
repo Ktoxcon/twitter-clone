@@ -1,20 +1,32 @@
-import { unbracketWithBrackets } from "unbracket";
+const unbracket = require("unbracket");
 
 const longArguments = (command) => {
-  return unbracketWithBrackets(command);
+  return unbracket.unbracketWithBrackets(command);
 };
 
 const CommandParser = (req) => {
-  const longArgument = longArguments(req.body.command).join("");
-  const replacement = new RegExp(longArgument);
-  const rawReq = req.body.command.replace(replacement, "");
-  const toParse = rawReq
-    .trim()
-    .split(" ")
-    .filter((arg) => arg.trim());
-  const command = toParse.shift();
-  const args = [longArgument, ...toParse.filter((i) => i !== "[]")];
+  let toParse = null;
+  let command = null;
+  let args = null;
 
+  if (req.body.command.includes("[")) {
+    const longArgument = longArguments(req.body.command).join("");
+    const replacement = new RegExp(longArgument);
+    const rawReq = req.body.command.replace(replacement, "");
+    toParse = rawReq
+      .trim()
+      .split(" ")
+      .filter((arg) => arg.trim());
+    command = toParse.shift();
+    args = [longArgument, ...toParse.filter((i) => i !== "[]")];
+  } else {
+    toParse = req.body.command
+      .trim()
+      .split(" ")
+      .filter((arg) => arg.trim());
+    command = toParse.shift();
+    args = toParse;
+  }
   return { command, args };
 };
 
@@ -77,20 +89,21 @@ const ArgumentValidator = ({ command, args }) => {
 };
 
 const getAction = (req) => {
-  const action = this.CommandParser(req);
-  const validCommand = this.CommentValidator(this.CommandMatcher(action));
-  const validArguments = this.ArgumentValidator(action);
+  const action = CommandParser(req);
+  const validCommand = CommentValidator(CommandMatcher(action));
+  const validArguments = ArgumentValidator(action);
 
   if (validCommand) {
     if (validArguments) return action;
     else {
-      return { command: "NULL", args: "Invalid arguments" };
+      return { command: null, args: "Invalid arguments" };
     }
   } else {
-    return { command: "INVALID_COMMAND", args: "NULL" };
+    return { command: "INVALID_COMMAND", args: null };
   }
 };
 
 module.exports = {
   CommandParser,
+  getAction,
 };
