@@ -1,16 +1,16 @@
 const unbracket = require("unbracket");
 
-const longArguments = (command) => {
+const parseLongArguments = (command) => {
   return unbracket.unbracketWithBrackets(command);
 };
 
-const CommandParser = (req) => {
+const commandFormater = (req) => {
   let toParse = null;
   let command = null;
   let args = null;
 
   if (req.body.command.includes("[")) {
-    const longArgument = longArguments(req.body.command).join("");
+    const longArgument = parseLongArguments(req.body.command).join("");
     const replacement = new RegExp(longArgument);
     const rawReq = req.body.command.replace(replacement, "");
     toParse = rawReq
@@ -30,7 +30,7 @@ const CommandParser = (req) => {
   return { command, args };
 };
 
-const CommandMatcher = ({ command }) => {
+const commandMatcher = ({ command }) => {
   const COMMANDS = [
     "ADD_TWEET",
     "DELETE_TWEET",
@@ -54,7 +54,7 @@ const CommandMatcher = ({ command }) => {
   }
 };
 
-const CommentValidator = (command) => {
+const commandValidator = (command) => {
   if (command !== "Unrecognized command") {
     return true;
   } else {
@@ -62,7 +62,7 @@ const CommentValidator = (command) => {
   }
 };
 
-const ArgumentValidator = ({ command, args }) => {
+const argumentValidator = ({ command, args }) => {
   const COMMANDS = {
     ADD_TWEET: 1,
     DELETE_TWEET: 1,
@@ -89,21 +89,42 @@ const ArgumentValidator = ({ command, args }) => {
 };
 
 const getAction = (req) => {
-  const action = CommandParser(req);
-  const validCommand = CommentValidator(CommandMatcher(action));
-  const validArguments = ArgumentValidator(action);
+  const action = commandFormater(req);
+  const validCommand = commandValidator(commandMatcher(action));
+  const validArguments = argumentValidator(action);
 
   if (validCommand) {
     if (validArguments) return action;
     else {
-      return { command: null, args: "Invalid arguments" };
+      return { args: "invalid arguments" };
     }
   } else {
-    return { command: "INVALID_COMMAND", args: null };
+    return { command: "invalid command" };
+  }
+};
+
+const needsMiddleware = (req) => {
+  const validation = getAction(req);
+
+  if (validation.command !== "invalid command") {
+    if (validation.args !== "invalid arguments") {
+      if (
+        validation.command.toLowerCase() === "login" ||
+        validation.command.toLowerCase() === "register"
+      ) {
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return;
+    }
+  } else {
+    return;
   }
 };
 
 module.exports = {
-  CommandParser,
   getAction,
+  needsMiddleware,
 };

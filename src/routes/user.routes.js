@@ -1,8 +1,8 @@
-const express = require('express');
+const express = require("express");
 const api = express.Router();
-const uri = '/commands';
-const userController = require('../controllers/user.controller');
+const userController = require("../controllers/user.controller");
+const autentication = require("../middleware/autentication");
 
-api.post(uri,userController.commands);
+api.post("/commands", autentication.ensureAuth, userController.commands);
 
 module.exports = api;

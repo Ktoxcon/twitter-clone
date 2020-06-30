@@ -27,6 +27,9 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "jest": "^26.1.0",
+    "jwt-simple": "^0.5.6",
+    "jwt-simple-error-identify": "^1.1.0",
+    "moment": "^2.27.0",
     "mongoose": "^5.9.18",
     "unbracket": "^1.0.4"
   },
