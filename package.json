@@ -1,5 +1,5 @@
 {
-  "name": "tweeter-nodejs",
+  "name": "twitter-nodejs",
   "version": "1.0.0",
   "description": "Tweeter clone made in Node.js.",
   "main": "index.js",
@@ -25,13 +25,13 @@
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
+    "ubracket":"^1.0.4",
     "express": "^4.17.1",
     "jest": "^26.1.0",
     "jwt-simple": "^0.5.6",
     "jwt-simple-error-identify": "^1.1.0",
     "moment": "^2.27.0",
     "mongoose": "^5.9.18",
-    "unbracket": "^1.0.4"
   },
   "devDependencies": {
     "@babel/core": "^7.10.3",

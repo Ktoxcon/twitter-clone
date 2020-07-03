@@ -2,8 +2,7 @@ const bcrypt = require("bcrypt");
 const User = require("../models/user.model");
 const Tweet = require("../models/tweet.model");
 const jwt = require("../services/jwt");
-const ExpiredToken = require('jwt-simple-error-identify').ExpiredToken;
-const { getAction } = require("../lib/command_verificator");
+const { getAction } = require('../lib/command_verificator');
 
 const commands = async (req, res) => {
   try {

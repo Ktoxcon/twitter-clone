@@ -1,7 +1,7 @@
 "use strict";
 const jwt = require("jwt-simple");
 const moment = require("moment");
-const { needsMiddleware } = require("../lib/command_verificator");
+const { needsMiddleware } = require('../lib/command_verificator');
 const key = "root";
 
 exports.ensureAuth = (req, res, next) => {
