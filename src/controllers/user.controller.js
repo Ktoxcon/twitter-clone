@@ -1,8 +1,9 @@
 const bcrypt = require("bcrypt");
+const jwt = require("../services/jwt");
 const User = require("../models/user.model");
 const Tweet = require("../models/tweet.model");
-const jwt = require("../services/jwt");
-const { getAction } = require('../lib/command_verificator');
+const { getAction } = require("../lib/command_verificator");
+const { generatePassword } = require("../util/generatePassword");
 
 const commands = async (req, res) => {
   try {
@@ -43,6 +44,9 @@ const mapAction = async (user, { command, args }) => {
           break;
         case "unfollow":
           return await unfollowUser(user, args);
+          break;
+        case "profile":
+          return await profile(args);
           break;
         default:
           return { message: "Invalid command try again" };
@@ -97,8 +101,8 @@ const signIn = async (args) => {
       }
     }
   } catch (err) {
-    return { message: "Internal server error" };
     console.log(err);
+    return { message: "Internal server error" };
   }
 };
 
@@ -109,7 +113,9 @@ const addTweet = async (user, args) => {
     newTweet.date = new Date();
     newTweet.content = args[0];
 
-    const newTweetAdded = await newTweet.save();
+    const newTweetAdded = await (await newTweet.save())
+      .populate("creator", "-password -following -followers -name -email")
+      .execPopulate();
     if (!newTweetAdded) return { message: "Error adding new tweet" };
     else return newTweetAdded;
   } catch (err) {
@@ -155,18 +161,27 @@ const switchUpdateDelete = async (user, args, operation) => {
 
 const viewTweets = async (args) => {
   try {
-    const userFound = await User.findOne({ username: args[0] });
-    if (!userFound)
-      return { message: "The user with that username doesn't exist" };
-    else {
-      const tweets = await Tweet.find({ creator: userFound._id }).populate(
+    if (args[0] === "*") {
+      const allTweets = await Tweet.find({}).populate(
         "creator",
-        "-_id username"
+        "-password -following -followers -name -email"
       );
-      if (!tweets) return { message: "Unable to get tweets" };
-      else if (tweets.length === 0)
-        return { message: `${userFound.username} doesn't have tweets yet.` };
-      else return tweets;
+      if (!allTweets) return { message: "Unable to get tweets" };
+      else return allTweets;
+    } else {
+      const userFound = await User.findOne({ username: args[0] });
+      if (!userFound)
+        return { message: "The user with that username doesn't exist" };
+      else {
+        const tweets = await Tweet.find({ creator: userFound._id }).populate(
+          "creator",
+          "username"
+        );
+        if (!tweets) return { message: "Unable to get tweets" };
+        else if (tweets.length === 0)
+          return { message: `${userFound.username} doesn't have tweets yet.` };
+        else return tweets;
+      }
     }
   } catch (err) {
     console.log(err);
@@ -190,7 +205,12 @@ const followUser = async (user, args) => {
           user.sub,
           { $push: { following: toFollow } },
           { new: true }
-        ).populate("following", "-password -following -followers -name -email");
+        )
+          .select("username")
+          .populate(
+            "following",
+            "-password -following -followers -name -email"
+          );
         const addFollower = await User.findByIdAndUpdate(toFollow._id, {
           $push: { followers: user.sub },
         });
@@ -221,13 +241,14 @@ const unfollowUser = async (user, args) => {
       else {
         const stopFollowing = await User.findByIdAndUpdate(
           user.sub,
-          { $pull: { following:toUnFollow._id } },
-          { new: true },
-        ).populate("following", "-following -password -followers -name -email")
-         .select("username");
+          { $pull: { following: toUnFollow._id } },
+          { new: true }
+        )
+          .populate("following", "-following -password -followers -name -email")
+          .select("username");
 
         const removeFollower = await User.findByIdAndUpdate(toUnFollow._id, {
-          $pull: { followers:user.sub  },
+          $pull: { followers: user.sub },
         });
 
         if (stopFollowing && removeFollower) {
@@ -243,13 +264,24 @@ const unfollowUser = async (user, args) => {
   }
 };
 
-const generatePassword = async (password) => {
-  return await new Promise((res, rej) => {
-    bcrypt.hash(password, 10, (err, hash) => {
-      if (err) rej(err);
-      res(hash);
-    });
-  });
+const profile = async (args) => {
+  try {
+    const profile = await User.findOne({ username: args[0] })
+      .select("_id username following followers")
+      .populate("following", "-_id -name -email -password -folloing -followers")
+      .populate(
+        "followers",
+        "-_id -name -email -password -folloing -followers -following"
+      );
+    if (!profile)
+      return {
+        message: "Unable to get the profile of that user, verify the username",
+      };
+    else return profile;
+  } catch (err) {
+    console.log(err);
+    return { message: "Internal server error" };
+  }
 };
 
 module.exports = {

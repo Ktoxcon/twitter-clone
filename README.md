@@ -1,3 +1,3 @@
 # Twitter API Clone
 
-This project simulates being the Twitter API.
+Este proyecto simula ser la API de Twitter, se maneja a través de comandos ingresados en Postman.
