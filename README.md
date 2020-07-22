@@ -2,7 +2,7 @@
 
 Este proyecto simula ser la API de Twitter, se maneja a través de comandos ingresados en Postman.
 <a href="https://github.com/ktoxcon/twitter-clone">
-  <img src="https://github-readme-stats.vercel.app/api/pin/?username=ktoxcon&repo=twitter-clone" />
+  <img src="https://github-readme-stats.vercel.app/api/pin/?username=ktoxcon&bg_color=000&title_color=fffff0&text_color=fff&repo=twitter-clone" />
 </a>
 
 # End Point
