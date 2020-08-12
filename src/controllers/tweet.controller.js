@@ -1,8 +1,11 @@
 const Tweet = require("../models/tweet.model");
+const Reaction = require("../models/reaction.model");
+const { findOne } = require("../models/reaction.model");
 
 const addTweet = async (user, args) => {
   try {
     let newTweet = new Tweet();
+    let reactions = new Reaction();
     newTweet.creator = user.sub;
     newTweet.date = new Date();
     newTweet.content = args[0];
@@ -11,7 +14,17 @@ const addTweet = async (user, args) => {
       .populate("creator", "-password -following -followers -name -email")
       .execPopulate();
     if (!newTweetAdded) return { message: "Error adding new tweet" };
-    else return newTweetAdded;
+    else {
+      reactions.tweet = newTweetAdded._id;
+      const reactionSaved = await reactions.save();
+
+      if (!reactionSaved)
+        return {
+          message:
+            "Error, this tweet doesn't has an interaction object to save its likes",
+        };
+      else return newTweetAdded;
+    }
   } catch (err) {
     console.log(err);
     return { message: "Internal server error" };
@@ -83,8 +96,54 @@ const viewTweets = async (args) => {
   }
 };
 
+const doLike = async (tweetId, userId) => {
+  try {
+    const liked = await Reaction.findOneAndUpdate(
+      { tweet: tweetId },
+      { $push: { interactors: userId }, $inc: { likes: 1 } }
+    );
+    if (!liked) return { message: "Error trying to like this tweet" };
+    else return { message: "You like this tweet" };
+  } catch (err) {
+    console.log(err);
+    return { message: "Internal server error" };
+  }
+};
+
+const dislike = async (tweetId, userId) => {
+  try {
+    const disliked = await Reaction.findOneAndUpdate(
+      { tweet: tweetId },
+      { $pull: { interactors: userId }, $inc: { likes: -1 } }
+    );
+    if (!disliked) return { message: "Error trying to dislike this tweet" };
+    else return { message: "You don't like this tweet anymore" };
+  } catch (err) {
+    console.log(err);
+    return { message: "Internal server error" };
+  }
+};
+
+const like = async (user, args) => {
+  try {
+    const tweet = await Tweet.findById(args[0]);
+    if (!tweet) return { message: "Sorry that tweet doesn't exists" };
+    else {
+      const previusReactions = await Reaction.findOne({
+        $and: [{ tweet: tweet._id }, { interactors: { _id: user.sub } }],
+      });
+      if (!previusReactions) return await doLike(tweet._id, user.sub);
+      else return await dislike(tweet._id, user.sub);
+    }
+  } catch (err) {
+    console.log(err);
+    return { message: "Internal serverv error" };
+  }
+};
+
 module.exports = {
   addTweet,
   switchUpdateDelete,
   viewTweets,
+  like,
 };
