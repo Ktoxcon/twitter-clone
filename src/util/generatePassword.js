@@ -7,7 +7,6 @@ const generatePassword = async (password) => {
       res(hash);
     });
   });
-
 };
 
 module.exports = { generatePassword };
