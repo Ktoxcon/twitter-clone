@@ -1,4 +1,5 @@
 const Tweet = require("../models/tweet.model");
+const Reply = require("../models/reply.model");
 const Reaction = require("../models/reaction.model");
 
 const addTweet = async (user, args) => {
@@ -113,7 +114,50 @@ const like = async (user, args) => {
     }
   } catch (err) {
     console.log(err);
-    return { message: "Internal serverv error" };
+    return { message: "Internal server error" };
+  }
+};
+
+const makeReply = async (user, args) => {
+  try {
+    const newReply = new Reply();
+    const tweetFound = await Tweet.findById(args[1]);
+    if (!tweetFound) return { message: "Sorry, that tweet doesn't exists" };
+    else {
+      newReply.author = user.sub;
+      newReply.content = args[0];
+      const newReplyAdded = await newReply.save();
+      if (!newReplyAdded) return { message: "Error unable to save reply" };
+      else {
+        const addReply = await Tweet.findByIdAndUpdate(
+          tweetFound._id,
+          {
+            $push: { replies: newReplyAdded._id },
+          },
+          { new: true }
+        )
+          .populate(
+            "creator",
+            "-_id -password -following -followers -name -email"
+          )
+          .populate("likes", "-_id -interactors")
+          .populate([
+            {
+              path: "replies",
+              select: "-_id",
+              populate: {
+                path: "author",
+                select: "-_id -password -following -followers -name -email",
+              },
+            },
+          ]);
+
+        return !addReply ? { message: "unaggregated reply" } : addReply;
+      }
+    }
+  } catch (err) {
+    console.log(err);
+    return { message: "Internal server error" };
   }
 };
 
@@ -121,4 +165,5 @@ module.exports = {
   addTweet,
   switchUpdateDelete,
   like,
+  makeReply,
 };

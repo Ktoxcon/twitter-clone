@@ -5,6 +5,7 @@ const TweetSchema = Schema(
   {
     creator: { type: Schema.Types.ObjectId, ref: "user" },
     likes: { type: Schema.Types.ObjectId, ref: "reaction" },
+    replies: [{ type: Schema.Types.ObjectId, ref: "reply" }],
     date: Date,
     content: String,
   },

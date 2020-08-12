@@ -152,7 +152,8 @@ const viewTweets = async (args) => {
     if (args[0] === "*") {
       const allTweets = await Tweet.find({})
         .populate("creator", "-password -following -followers -name -email")
-        .populate("likes", "-_id -interactors");
+        .populate("likes", "-_id -interactors")
+        .populate("replies", "-_id");
       if (!allTweets) return { message: "Unable to get tweets" };
       else return allTweets;
     } else {
@@ -162,7 +163,18 @@ const viewTweets = async (args) => {
       else {
         const tweets = await Tweet.find({ creator: userFound._id })
           .populate("creator", "username")
-          .populate("likes", "-_id -interactors");
+          .populate("likes", "-_id -interactors")
+          .populate([
+            {
+              path: "replies",
+              select: "-_id",
+              populate: {
+                path: "author",
+                select: "-_id -password -following -followers -name -email",
+              },
+            },
+          ]);
+
         if (!tweets) return { message: "Unable to get tweets" };
         else if (tweets.length === 0)
           return { message: `${userFound.username} doesn't have tweets yet.` };

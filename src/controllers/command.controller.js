@@ -7,7 +7,12 @@ const {
   viewTweets,
   profile,
 } = require("./user.controller");
-const { addTweet, switchUpdateDelete, like } = require("./tweet.controller");
+const {
+  addTweet,
+  switchUpdateDelete,
+  like,
+  makeReply,
+} = require("./tweet.controller");
 
 const commands = async (req, res) => {
   try {
@@ -57,6 +62,9 @@ const mapAction = async (user, { command, args }) => {
           break;
         case "dislike_tweet":
           return await like(user, args);
+          break;
+        case "reply_tweet":
+          return await makeReply(user, args);
           break;
         default:
           return { message: "Invalid command try again" };
