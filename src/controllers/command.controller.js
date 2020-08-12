@@ -4,14 +4,10 @@ const {
   signIn,
   followUser,
   unfollowUser,
+  viewTweets,
   profile,
 } = require("./user.controller");
-const {
-  addTweet,
-  switchUpdateDelete,
-  viewTweets,
-  like,
-} = require("./tweet.controller");
+const { addTweet, switchUpdateDelete, like } = require("./tweet.controller");
 
 const commands = async (req, res) => {
   try {

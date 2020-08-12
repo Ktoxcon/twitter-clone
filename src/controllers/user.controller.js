@@ -1,5 +1,6 @@
 const jwt = require("../services/jwt");
 const User = require("../models/user.model");
+const Tweet = require("../models/tweet.model");
 const bcrypt = require("bcrypt");
 const { generatePassword } = require("../util/generatePassword");
 
@@ -146,10 +147,39 @@ const profile = async (args) => {
   }
 };
 
+const viewTweets = async (args) => {
+  try {
+    if (args[0] === "*") {
+      const allTweets = await Tweet.find({})
+        .populate("creator", "-password -following -followers -name -email")
+        .populate("likes", "-_id -interactors");
+      if (!allTweets) return { message: "Unable to get tweets" };
+      else return allTweets;
+    } else {
+      const userFound = await User.findOne({ username: args[0] });
+      if (!userFound)
+        return { message: "The user with that username doesn't exist" };
+      else {
+        const tweets = await Tweet.find({ creator: userFound._id })
+          .populate("creator", "username")
+          .populate("likes", "-_id -interactors");
+        if (!tweets) return { message: "Unable to get tweets" };
+        else if (tweets.length === 0)
+          return { message: `${userFound.username} doesn't have tweets yet.` };
+        else return tweets;
+      }
+    }
+  } catch (err) {
+    console.log(err);
+    return { message: "Internal server Error" };
+  }
+};
+
 module.exports = {
   signUp,
   signIn,
   followUser,
   unfollowUser,
   profile,
+  viewTweets,
 };

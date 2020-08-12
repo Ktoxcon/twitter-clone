@@ -1,6 +1,5 @@
 const Tweet = require("../models/tweet.model");
 const Reaction = require("../models/reaction.model");
-const { findOne } = require("../models/reaction.model");
 
 const addTweet = async (user, args) => {
   try {
@@ -10,20 +9,22 @@ const addTweet = async (user, args) => {
     newTweet.date = new Date();
     newTweet.content = args[0];
 
-    const newTweetAdded = await (await newTweet.save())
-      .populate("creator", "-password -following -followers -name -email")
-      .execPopulate();
-    if (!newTweetAdded) return { message: "Error adding new tweet" };
-    else {
-      reactions.tweet = newTweetAdded._id;
-      const reactionSaved = await reactions.save();
-
-      if (!reactionSaved)
-        return {
-          message:
-            "Error, this tweet doesn't has an interaction object to save its likes",
-        };
-      else return newTweetAdded;
+    const reactionSaved = await reactions.save();
+    if (!reactionSaved) {
+      return {
+        message:
+          "Error, this tweet doesn't has an interaction object to save its likes",
+      };
+    } else {
+      newTweet.likes = reactionSaved._id;
+      const newTweetAdded = await (await newTweet.save())
+        .populate("creator", "-password -following -followers -name -email")
+        .populate("likes", "-_id -interactors")
+        .execPopulate();
+      if (!newTweetAdded) return { message: "Error adding new tweet" };
+      else {
+        return newTweetAdded;
+      }
     }
   } catch (err) {
     console.log(err);
@@ -66,40 +67,10 @@ const switchUpdateDelete = async (user, args, operation) => {
   }
 };
 
-const viewTweets = async (args) => {
-  try {
-    if (args[0] === "*") {
-      const allTweets = await Tweet.find({}).populate(
-        "creator",
-        "-password -following -followers -name -email"
-      );
-      if (!allTweets) return { message: "Unable to get tweets" };
-      else return allTweets;
-    } else {
-      const userFound = await User.findOne({ username: args[0] });
-      if (!userFound)
-        return { message: "The user with that username doesn't exist" };
-      else {
-        const tweets = await Tweet.find({ creator: userFound._id }).populate(
-          "creator",
-          "username"
-        );
-        if (!tweets) return { message: "Unable to get tweets" };
-        else if (tweets.length === 0)
-          return { message: `${userFound.username} doesn't have tweets yet.` };
-        else return tweets;
-      }
-    }
-  } catch (err) {
-    console.log(err);
-    return { message: "Internal server Error" };
-  }
-};
-
-const doLike = async (tweetId, userId) => {
+const doLike = async (id, userId) => {
   try {
     const liked = await Reaction.findOneAndUpdate(
-      { tweet: tweetId },
+      { _id: id },
       { $push: { interactors: userId }, $inc: { likes: 1 } }
     );
     if (!liked) return { message: "Error trying to like this tweet" };
@@ -110,10 +81,10 @@ const doLike = async (tweetId, userId) => {
   }
 };
 
-const dislike = async (tweetId, userId) => {
+const dislike = async (id, userId) => {
   try {
     const disliked = await Reaction.findOneAndUpdate(
-      { tweet: tweetId },
+      { _id: id },
       { $pull: { interactors: userId }, $inc: { likes: -1 } }
     );
     if (!disliked) return { message: "Error trying to dislike this tweet" };
@@ -130,10 +101,12 @@ const like = async (user, args) => {
     if (!tweet) return { message: "Sorry that tweet doesn't exists" };
     else {
       const previusReactions = await Reaction.findOne({
-        $and: [{ tweet: tweet._id }, { interactors: { _id: user.sub } }],
+        $and: [{ _id: tweet.likes }, { interactors: { _id: user.sub } }],
       });
-      if (!previusReactions) return await doLike(tweet._id, user.sub);
-      else return await dislike(tweet._id, user.sub);
+      if (!previusReactions) {
+        const toLike = await Reaction.findById(tweet.likes);
+        return await doLike(toLike._id, user.sub);
+      } else return await dislike(previusReactions._id, user.sub);
     }
   } catch (err) {
     console.log(err);
@@ -144,6 +117,5 @@ const like = async (user, args) => {
 module.exports = {
   addTweet,
   switchUpdateDelete,
-  viewTweets,
   like,
 };
