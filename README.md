@@ -1,9 +1,8 @@
 # Twitter API Clone
 
-Este proyecto simula ser la API de Twitter, se maneja a través de comandos ingresados en Postman.  
-Se encuentra bajo la licencia GPLv3 de Software Libre.
+Este proyecto simula ser la API de Twitter, se maneja a través de comandos ingresados en Postman. Se encuentra bajo la licencia GPLv3 de Software Libre.
 <a href="https://github.com/ktoxcon/twitter-clone">
-  <img src="https://github-readme-stats.vercel.app/api/pin/?username=ktoxcon&bg_color=fff&title_color=000&text_color=fff&repo=twitter-clone" />
+  <img src="https://github-readme-stats.vercel.app/api/pin/?username=ktoxcon&bg_color=fff&title_color=000&text_color=000&repo=twitter-clone" />
 </a>
 
 # End Point
