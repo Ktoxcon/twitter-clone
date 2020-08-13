@@ -26,7 +26,7 @@ A través de el se pueden utilizar todos los comandos.
 Los parametros deben ser cambiados en base a las necesidades del usuario
 
 # Observaciones
-## Algunos comandos agregan funcionalidades extras para su utilización.
+## Algunos comandos agregan funcionalidades extra para su utilización.
 - En el comando `register`es posible agregar un nombre que incluya espacios, para ello se debe encerrar el nombre dentro de corchetes de la siguiente forma:
   * `register [jose perez] ...`  
  
