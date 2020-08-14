@@ -13,6 +13,7 @@ El proyecto cuenta con un único end point:
 A través de el se pueden utilizar todos los comandos.
 
 # Funcionalidades
+<a id="list"></a>
  El proyecto cuenta con los siguientes comandos y los argumentos que cada uno puede recibir: 
  | Comando | Argumentos | Descripción | Admite Contenido con Espacios |
  | :---: | :---: | :---: | :---: |
@@ -66,7 +67,7 @@ El proyecto fue actualizado para cumplir con los requerimientos nuevos, a contin
       reply_tweet
       retweet
      ```  
-     En la lista de <a href="https://github.com/Ktoxcon/twitter-clone/edit/master/README.md#15">arriba</a> se encuentra información detallada de cada comando y sus argumentos
+     En la lista de <a href="#list">arriba</a> se encuentra información detallada de cada comando y sus argumentos
      
      
      
