@@ -15,7 +15,7 @@ A través de el se pueden utilizar todos los comandos.
 <a id="list"></a>
 # Funcionalidades
 <a id="list"></a>
- El proyecto cuenta con los siguientes comandos y los argumentos que cada uno puede recibir: 
+ El proyecto cuenta con los siguientes comandos: 
  | Comando | Argumentos | Descripción | Admite Contenido con Espacios |
  | :---: | :---: | :---: | :---: |
  | `register` | `nombre correo username password` | Registro de Usuario | ✓ |
