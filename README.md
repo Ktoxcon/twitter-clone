@@ -13,7 +13,7 @@ El proyecto cuenta con un único end point:
 A través de el se pueden utilizar todos los comandos.
 
 # Funcionalidades
- El proyecto cuenta con los siguientes comandos y los argumentos que pueden recibir: 
+ El proyecto cuenta con los siguientes comandos y los argumentos que cada uno puede recibir: 
  | Comando | Argumentos | Descripción | Admite Contenido con Espacios |
  | :---: | :---: | :---: | :---: |
  | `register` | `nombre correo username password` | Registro de Usuario | ✓ |
@@ -30,20 +30,18 @@ A través de el se pueden utilizar todos los comandos.
  | `reply_tweet` | `idTweet respuesta` | Responder un tweet e iniciar una conversación | ✓ |
  | `retweet` | `idTweet titulo` | Retweetear | ✓ |
    
- Los parametros deben ser cambiados en base a las necesidades del usuario
+ **Los parametros deben ser cambiados en base a las necesidades del usuario**
 
 # Observaciones
 ## Algunos comandos agregan funcionalidades extra para su utilización.
 - En el comando `register`es posible agregar un nombre que incluya espacios, para ello se debe encerrar el nombre dentro de corchetes de la siguiente forma:
   * `register [jose perez] ...`  
- 
- #### Si no se agregan los corchetes no se podrá agregar el usuario
+**Si no se agregan los corchetes no se podrá agregar el usuario**
  
 - Los comandos `add_tweet` y `edit_tweet` tambien admiten agregar contenido con espacios siempre y cuando este sea encerrado dentro de corchetes de la siguiente forma:  
   * `add_tweet [Un tweet con espacios multiples]`  
   * `edit_tweet id [Nuevo contenido multi espacios]`    
-  
- #### Si no se agregan corchetes a los nuevos contenidos con espacios, no será posible agregar o editar el tweet.
+**Si no se agregan corchetes a los nuevos contenidos con espacios, no será posible agregar o editar el tweet.**
   
 - El comando `view_tweets` puede recibir el patrón glob `*` para visualizar los tweets de todos los usuarios de la siguiente forma:
   * `view_tweets *`  
