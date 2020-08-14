@@ -173,6 +173,16 @@ const viewTweets = async (args) => {
                 select: "-_id -password -following -followers -name -email",
               },
             },
+          ])
+          .populate([
+            {
+              path: "retweets",
+              select: "-_id",
+              populate: {
+                path: "creator",
+                select: "-_id -password -following -followers -name -email",
+              },
+            },
           ]);
 
         if (!tweets) return { message: "Unable to get tweets" };

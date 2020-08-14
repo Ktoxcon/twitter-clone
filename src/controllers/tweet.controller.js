@@ -150,6 +150,16 @@ const makeReply = async (user, args) => {
                 select: "-_id -password -following -followers -name -email",
               },
             },
+          ])
+          .populate([
+            {
+              path: "retweets",
+              select: "comment",
+              populate: {
+                path: "creator",
+                select: "-_id -password -following -followers -name -email",
+              },
+            },
           ]);
 
         return !addReply ? { message: "unaggregated reply" } : addReply;

@@ -14,6 +14,8 @@ const {
   makeReply,
 } = require("./tweet.controller");
 
+const { retweet } = require("./retweet.controller");
+
 const commands = async (req, res) => {
   try {
     res.send(await mapAction(req.user, getAction(req)));
@@ -65,6 +67,9 @@ const mapAction = async (user, { command, args }) => {
           break;
         case "reply_tweet":
           return await makeReply(user, args);
+          break;
+        case "retweet":
+          return await retweet(user, args);
           break;
         default:
           return { message: "Invalid command try again" };
