@@ -1,8 +1,9 @@
 # Twitter API Clone
 
-Este proyecto simula ser la API de Twitter, se maneja a través de comandos ingresados en Postman.
+Este proyecto simula ser la API de Twitter, se maneja a través de comandos ingresados en Postman.  
+<br />
 <a href="https://github.com/ktoxcon/twitter-clone">
-  <img src="https://github-readme-stats.vercel.app/api/pin/?username=ktoxcon&bg_color=000&title_color=fffff0&text_color=fff&repo=twitter-clone" />
+  <img src="https://github-readme-stats.vercel.app/api/pin/?username=ktoxcon&bg_color=fff&title_color=001&text_color=001&repo=twitter-clone" />
 </a>
 
 # End Point
@@ -25,7 +26,7 @@ A través de el se pueden utilizar todos los comandos.
 Los parametros deben ser cambiados en base a las necesidades del usuario
 
 # Observaciones
-## Algunos comandos agregan funcionalidades extras para su utilización.
+## Algunos comandos agregan funcionalidades extra para su utilización.
 - En el comando `register`es posible agregar un nombre que incluya espacios, para ello se debe encerrar el nombre dentro de corchetes de la siguiente forma:
   * `register [jose perez] ...`  
  
