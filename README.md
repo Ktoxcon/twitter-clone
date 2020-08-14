@@ -33,25 +33,10 @@ A través de el se pueden utilizar todos los comandos.
  | `retweet` | `idTweet titulo` | Retweetear | ✓ |
    
  **Los parametros deben ser cambiados en base a las necesidades del usuario**
-
+<a id="obs"></a>
 # Observaciones
-## Algunos comandos agregan funcionalidades extra para su utilización.
-- En el comando `register`es posible agregar un nombre que incluya espacios, para ello se debe encerrar el nombre dentro de corchetes de la siguiente forma:
-  * `register [jose perez] ...`  
+### Algunos comandos agregan funcionalidades extra para su utilización.
 
- **Si no se agregan los corchetes no se podrá agregar el usuario**
- 
-- Los comandos `add_tweet` y `edit_tweet` tambien admiten agregar contenido con espacios siempre y cuando este sea encerrado dentro de corchetes de la siguiente forma:  
-  * `add_tweet [Un tweet con espacios multiples]`  
-  * `edit_tweet id [Nuevo contenido multi espacios]`  
-
- **Si no se agregan corchetes a los nuevos contenidos con espacios, no será posible agregar o editar el tweet.**
-  
-- El comando `view_tweets` puede recibir el patrón glob `*` para visualizar los tweets de todos los usuarios de la siguiente forma:
-  * `view_tweets *`  
-- Si por el contrario se desea visualizar los tweets de un solo usuario, se debe especificar el `username`:  
-  * `view_tweets username`
-  
 # Actualizaciones  
 El proyecto fue actualizado para cumplir con los requerimientos nuevos, a continuación se listan algunos cambios importantes:  
 
@@ -68,7 +53,8 @@ El proyecto fue actualizado para cumplir con los requerimientos nuevos, a contin
       reply_tweet
       retweet
      ```  
-     En la lista de <a href="#list">arriba</a> se encuentra información detallada de cada comando y sus argumentos
+     En la lista de <a href="#list">arriba</a> se encuentra información detallada de cada comando y sus argumentos.  
+     Cada comando tiene observaciones para su uso, estas se encuentran en el apartado de <a href="#obs">observaciones</a>.
      
      
      
