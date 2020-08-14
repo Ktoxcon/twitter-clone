@@ -104,4 +104,4 @@ A través de el se pueden utilizar todos los comandos.
 
 <hr>
 
-<p align="center">Hecho con <del>el ❤️</del> con un teclado por Ktoxcon</p>
+<p align="center">Hecho con <del>el ❤️</del> con una 💻 por Ktoxcon</p>
