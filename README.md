@@ -29,7 +29,7 @@ El proyecto fue actualizado para cumplir con los requerimientos nuevos, a contin
 
 El proyecto cuenta con un único end point:
 `http://localhost:3000/twitter/v1/commands`  
-A través de el se pueden utilizar todos los comandos.
+A través del cual se pueden utilizar todos los comandos.
 
 <a id="list"></a>
 # Funcionalidades
