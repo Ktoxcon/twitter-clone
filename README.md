@@ -10,8 +10,8 @@ Este proyecto simula ser la API de Twitter, se maneja a través de comandos ingr
 El proyecto fue actualizado para cumplir con los requerimientos nuevos, a continuación se listan algunos cambios importantes:  
 
 - ## Twitter-Command
-     Esta nueva versión del proyecto cambio la lógica de verificación de comandos de una carpeta local a la dependencia   
-     [Twitter-Command](https://www.npmjs.com/package/twitter-command). Dicha dependencia contiene la librería para validar comandos que se  
+     Esta nueva versión del proyecto cambio la lógica de verificación de comandos de una carpeta local a la dependencia  
+     [Twitter-Command](https://www.npmjs.com/package/twitter-command).  Dicha dependencia contiene la librería para validar comandos que se
      encontraba en la carpeta lib.  
      
 - ## Nuevos Comandos
