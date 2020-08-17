@@ -15,7 +15,7 @@ El proyecto fue actualizado para cumplir con los requerimientos nuevos, a contin
      encontraba en la carpeta lib.  
      
 - ## Nuevos Comandos
-     En la nueva versión del proyecto se agregaron los nuevos comandos:
+     En esta versión del proyecto se agregaron los nuevos comandos:
      ```
       like_tweet
       dislike_tweet
