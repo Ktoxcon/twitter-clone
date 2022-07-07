@@ -29,7 +29,7 @@
     "jest": "^26.1.0",
     "jwt-simple": "^0.5.6",
     "jwt-simple-error-identify": "^1.1.0",
-    "moment": "^2.27.0",
+    "moment": "^2.29.4",
     "mongoose": "^5.9.18",
     "twitter-command": "^1.0.7",
     "unbracket": "^1.0.4"
